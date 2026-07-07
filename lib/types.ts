@@ -2,6 +2,7 @@ export interface Flavor {
   id: string;
   name: string;
   slug: string;
+  description?: string;
   pricePerPiece: number;
   isClassic: boolean;
   imageUrl: string;
@@ -48,7 +49,7 @@ export interface OrderItem {
 
 export interface OrderLog {
   id: string;
-  type: "package" | "mini-box";
+  type: "package" | "mini-box" | "cart";
   items: OrderItem[];
   total: number;
   pieceCount?: number;
@@ -59,3 +60,24 @@ export interface OrderLog {
 }
 
 export type PackageAllocation = Record<string, number>;
+
+export interface CartPackageItem {
+  id: string;
+  type: "package";
+  pieceCount: number;
+  items: OrderItem[];
+  total: number;
+  deliveryNote: string;
+  label: string;
+}
+
+export interface CartMiniBoxItem {
+  id: string;
+  type: "mini-box";
+  name: string;
+  items: OrderItem[];
+  total: number;
+  deliveryNote: string;
+}
+
+export type CartItem = CartPackageItem | CartMiniBoxItem;

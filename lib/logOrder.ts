@@ -5,12 +5,13 @@ import { db } from "./firebase";
 import type { OrderItem } from "./types";
 
 interface LogOrderInput {
-  type: "package" | "mini-box";
+  type: "package" | "mini-box" | "cart";
   items: OrderItem[];
   total: number;
   pieceCount?: number;
   deliveryNote: string;
   message: string;
+  cartItemCount?: number;
 }
 
 export async function logOrder(input: LogOrderInput): Promise<void> {

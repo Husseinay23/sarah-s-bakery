@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Caveat, Inter } from "next/font/google";
+import { ClientProviders } from "@/components/ClientProviders";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -41,7 +42,7 @@ export default function RootLayout({
       <body
         className={`${fraunces.variable} ${caveat.variable} ${inter.variable} font-sans antialiased`}
       >
-        {children}
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );

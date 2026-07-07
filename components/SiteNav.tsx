@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SpiralProgressIcon } from "./SpiralProgressIcon";
+import { CartButton } from "./Cart/CartButton";
 
 const links = [
   { href: "#flavors", label: "Flavors" },
-  { href: "#order", label: "Order" },
   { href: "#mini-box", label: "Mini Box" },
-  { href: "#delivery", label: "Delivery" },
+  { href: "#order", label: "Packages" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export function SiteNav() {
@@ -46,11 +47,12 @@ export function SiteNav() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <CartButton />
           <a
-            href="#order"
-            className="rounded-full bg-cinnamon px-4 py-2 text-sm font-medium text-white transition hover:bg-cinnamon/90"
+            href="#mini-box"
+            className="hidden rounded-full bg-cinnamon px-4 py-2 text-sm font-medium text-white transition hover:bg-cinnamon/90 sm:inline-flex"
           >
-            Build Order
+            Fill Your Box
           </a>
           <SpiralProgressIcon progress={scrollProgress} />
         </div>

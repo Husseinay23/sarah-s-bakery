@@ -62,7 +62,8 @@ export function OrderLogPanel() {
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="font-medium capitalize text-espresso">
-                {order.type.replace("-", " ")} · ${order.total}
+                {order.type === "cart" ? "Full cart order" : order.type.replace("-", " ")} · $
+                {order.total}
               </p>
               <p className="text-sm text-espresso/60">
                 {order.createdAt.toLocaleString()}

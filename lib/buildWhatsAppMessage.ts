@@ -1,4 +1,11 @@
-import type { Flavor, MiniBoxConfig, OrderItem, PackageTier, SiteSettings } from "./types";
+import type {
+  CartItem,
+  Flavor,
+  MiniBoxConfig,
+  OrderItem,
+  PackageTier,
+  SiteSettings,
+} from "./types";
 
 interface PackageOrderInput {
   type: "package";
@@ -43,6 +50,49 @@ export function buildWhatsAppMessage(input: PackageOrderInput | MiniBoxOrderInpu
         lines.push(`- ${item.quantity}x ${item.flavorName}`);
       }
     }
+  }
+
+  return lines.join("\n");
+}
+
+export function buildCartWhatsAppMessage(
+  cartItems: CartItem[],
+  settings: SiteSettings,
+): string {
+  const lines: string[] = ["Hi Sarah! I'd like to order:", ""];
+  let orderTotal = 0;
+  let hasFreeDeliveryItem = false;
+
+  cartItems.forEach((item, index) => {
+    const num = index + 1;
+    if (item.type === "mini-box") {
+      lines.push(`[${num}] ${item.name} (${item.items.reduce((s, i) => s + i.quantity, 0)} pcs) — $${item.total}, free delivery`);
+      lines.push("");
+      for (const orderItem of item.items) {
+        lines.push(`- ${orderItem.quantity}x ${orderItem.flavorName}`);
+      }
+      hasFreeDeliveryItem = true;
+    } else {
+      const hasMixed = item.items.length > 1;
+      const flavorLabel = hasMixed ? "mixed flavors" : item.items[0]?.flavorName ?? "flavors";
+      lines.push(`[${num}] Package — ${item.pieceCount} pieces — ${flavorLabel} — $${item.total}`);
+      lines.push("");
+      for (const orderItem of item.items) {
+        lines.push(`- ${orderItem.quantity}x ${orderItem.flavorName}`);
+      }
+      lines.push(`Delivery: ${item.deliveryNote}`);
+      if (item.deliveryNote.includes("free")) hasFreeDeliveryItem = true;
+    }
+    lines.push("");
+    orderTotal += item.total;
+  });
+
+  lines.push(`Order total: $${orderTotal}`);
+
+  if (!hasFreeDeliveryItem) {
+    lines.push(`Delivery charge: $${settings.deliveryCharge} (applies once per order)`);
+  } else {
+    lines.push("At least one item qualifies for free delivery.");
   }
 
   return lines.join("\n");

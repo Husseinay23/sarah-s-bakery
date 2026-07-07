@@ -34,3 +34,105 @@ body {
   background-color: var(--color-cinnamon);
   border-radius: 9999px;
 }
+
+/* ── Mini Box visual ── */
+
+.mini-box-section {
+  background: linear-gradient(180deg, var(--color-cream) 0%, #f8efe4 50%, var(--color-cream) 100%);
+}
+
+.mini-box-scene {
+  perspective: 900px;
+}
+
+.mini-box-scene--compact .mini-box-container {
+  transform: scale(0.92);
+}
+
+.mini-box-container {
+  position: relative;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #e8d5c0 0%, #d4b896 100%);
+  padding: 3px;
+  transform: rotateX(2deg);
+  transition: box-shadow 0.5s ease;
+}
+
+.mini-box-container--complete {
+  background: linear-gradient(145deg, #e8d5c0 0%, #c9a06c 50%, #d4b896 100%);
+}
+
+.mini-box-lid {
+  position: absolute;
+  top: -8px;
+  left: 8%;
+  right: 8%;
+  height: 18px;
+  border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, #dbc4a8, #c9a882);
+  transform: rotateX(-12deg);
+  transform-origin: bottom center;
+  box-shadow: 0 -2px 8px rgba(58, 35, 24, 0.08);
+  z-index: 2;
+}
+
+.mini-box-body {
+  position: relative;
+  border-radius: 17px;
+  background: linear-gradient(160deg, #faf6f0 0%, #f0e8dc 100%);
+  padding: 20px;
+  box-shadow: inset 0 2px 12px rgba(58, 35, 24, 0.06);
+}
+
+.mini-box-body--compact {
+  padding: 14px;
+}
+
+.mini-box-progress {
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(58, 35, 24, 0.08);
+  overflow: hidden;
+}
+
+.mini-box-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--color-cinnamon), var(--color-rose));
+}
+
+.compartment-paper {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 252, 248, 0.9) 0%, transparent 60%),
+    linear-gradient(135deg, #f5ebe0 0%, #ede3d6 50%, #e8dccf 100%);
+  box-shadow: inset 0 1px 3px rgba(58, 35, 24, 0.06);
+}
+
+.compartment--highlight .compartment-paper {
+  background: linear-gradient(135deg, #faf0e4 0%, #f0e0d0 100%);
+  box-shadow: inset 0 0 0 1px rgba(198, 138, 78, 0.35);
+}
+
+.roll-shadow {
+  filter: drop-shadow(2px 4px 4px rgba(58, 35, 24, 0.25));
+}
+
+@media (max-width: 1279px) {
+  .mini-box-scene--sticky-mobile {
+    position: sticky;
+    top: 72px;
+    z-index: 20;
+    max-height: 30vh;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-box-container {
+    transform: none;
+  }
+  .mini-box-lid {
+    transform: none;
+  }
+}
+
