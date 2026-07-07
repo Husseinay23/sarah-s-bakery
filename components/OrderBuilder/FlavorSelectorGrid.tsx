@@ -12,6 +12,7 @@ interface FlavorSelectorGridProps {
   filledCount: number;
   onSelect: (flavorId: string) => void;
   registerRef: (id: string, el: HTMLElement | null) => void;
+  highlightedFlavorId?: string | null;
 }
 
 export function FlavorSelectorGrid({
@@ -21,6 +22,7 @@ export function FlavorSelectorGrid({
   filledCount,
   onSelect,
   registerRef,
+  highlightedFlavorId,
 }: FlavorSelectorGridProps) {
   const canAdd = filledCount < capacity;
 
@@ -28,17 +30,21 @@ export function FlavorSelectorGrid({
     <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3">
       {flavors.map((flavor) => {
         const quantity = countFlavor(slots, flavor.id);
+        const isHighlighted = highlightedFlavorId === flavor.id;
 
         return (
           <button
             key={flavor.id}
             type="button"
+            data-flavor-id={flavor.id}
             onClick={() => canAdd && onSelect(flavor.id)}
             disabled={!canAdd}
             className={`group relative flex flex-col items-center overflow-hidden rounded-xl border bg-white p-2 transition sm:rounded-2xl sm:p-2.5 ${
-              quantity > 0
-                ? "border-cinnamon/50 ring-1 ring-cinnamon/30"
-                : "border-cinnamon/15 hover:border-cinnamon/40"
+              isHighlighted
+                ? "border-rose ring-2 ring-rose/50 animate-pulse"
+                : quantity > 0
+                  ? "border-cinnamon/50 ring-1 ring-cinnamon/30"
+                  : "border-cinnamon/15 hover:border-cinnamon/40"
             } disabled:opacity-40`}
           >
             <div

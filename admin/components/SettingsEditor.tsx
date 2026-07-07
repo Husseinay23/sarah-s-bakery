@@ -6,6 +6,7 @@ import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { uploadFile, getStoragePath } from "@/lib/uploadFile";
 import { useFlavors } from "@/lib/useFlavors";
+import { HERO_DEFAULT_IMAGE } from "@/lib/localImages";
 import type { MiniBoxConfig, SiteSettings } from "@/lib/types";
 
 export function SettingsEditor() {
@@ -63,6 +64,51 @@ export function SettingsEditor() {
 
   return (
     <div className="space-y-8">
+      <section className="rounded-2xl border border-cinnamon/20 bg-white p-5">
+        <h3 className="mb-4 font-display text-xl font-semibold">Announcements & featured</h3>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="flex items-center gap-2 text-sm sm:col-span-2">
+            <input
+              type="checkbox"
+              checked={settings.announcementActive}
+              onChange={(e) => {
+                const announcementActive = e.target.checked;
+                setSettings({ ...settings, announcementActive });
+                saveSettings({ announcementActive });
+              }}
+            />
+            Show announcement bar on site
+          </label>
+          <label className="block text-sm sm:col-span-2">
+            <span className="mb-1 block font-medium">Announcement text</span>
+            <input
+              value={settings.announcementText}
+              onChange={(e) => setSettings({ ...settings, announcementText: e.target.value })}
+              onBlur={() => saveSettings({ announcementText: settings.announcementText })}
+              placeholder="Eid orders close Thursday"
+              className="w-full rounded-lg border border-cinnamon/20 px-3 py-2"
+            />
+          </label>
+          <label className="block text-sm sm:col-span-2">
+            <span className="mb-1 block font-medium">Featured flavor (homepage spotlight)</span>
+            <select
+              value={settings.featuredFlavorId}
+              onChange={(e) => {
+                setSettings({ ...settings, featuredFlavorId: e.target.value });
+                saveSettings({ featuredFlavorId: e.target.value });
+              }}
+              className="w-full rounded-lg border border-cinnamon/20 px-3 py-2"
+            >
+              {flavors.map((f) => (
+                <option key={f.id} value={f.id}>
+                  {f.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      </section>
+
       <section className="rounded-2xl border border-cinnamon/20 bg-white p-5">
         <h3 className="mb-4 font-display text-xl font-semibold">Store settings</h3>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -180,6 +226,13 @@ export function SettingsEditor() {
                 }}
               />
             </label>
+            <button
+              type="button"
+              onClick={() => saveSettings({ heroImageUrl: HERO_DEFAULT_IMAGE })}
+              className="ml-2 rounded-lg border border-cinnamon/30 px-3 py-2 text-sm hover:bg-blush/40"
+            >
+              Use mini-box.jpeg
+            </button>
           </div>
         </div>
 

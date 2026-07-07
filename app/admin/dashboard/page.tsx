@@ -8,6 +8,7 @@ import { TierEditor } from "@/admin/components/TierEditor";
 import { SettingsEditor } from "@/admin/components/SettingsEditor";
 import { OrderLogPanel } from "@/admin/components/OrderLogPanel";
 import { seedDatabase } from "@/lib/seedDatabase";
+import { syncLocalImages } from "@/lib/syncLocalImages";
 
 type Tab = "flavors" | "tiers" | "settings" | "orders";
 
@@ -24,6 +25,7 @@ export default function AdminDashboardPage() {
   const [tab, setTab] = useState<Tab>("flavors");
   const [seedMessage, setSeedMessage] = useState<string | null>(null);
   const [seeding, setSeeding] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) {
@@ -40,6 +42,18 @@ export default function AdminDashboardPage() {
       setSeedMessage(err instanceof Error ? err.message : "Seed failed.");
     } finally {
       setSeeding(false);
+    }
+  };
+
+  const handleSyncImages = async () => {
+    setSyncing(true);
+    try {
+      const result = await syncLocalImages();
+      setSeedMessage(result.message);
+    } catch (err) {
+      setSeedMessage(err instanceof Error ? err.message : "Image sync failed.");
+    } finally {
+      setSyncing(false);
     }
   };
 
@@ -75,6 +89,14 @@ export default function AdminDashboardPage() {
           className="rounded-full bg-cinnamon px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
         >
           {seeding ? "Seeding..." : "Seed menu data (first-time setup)"}
+        </button>
+        <button
+          type="button"
+          onClick={handleSyncImages}
+          disabled={syncing}
+          className="rounded-full border border-cinnamon/30 px-4 py-2 text-sm font-medium disabled:opacity-50"
+        >
+          {syncing ? "Applying..." : "Apply bundled images"}
         </button>
         {seedMessage && <p className="text-sm text-espresso/70 self-center">{seedMessage}</p>}
       </div>

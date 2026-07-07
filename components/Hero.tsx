@@ -3,14 +3,13 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { useSiteSettings } from "@/lib/useSiteData";
+import { HERO_DEFAULT_IMAGE } from "@/lib/localImages";
 
 export function Hero() {
   const { settings, loading } = useSiteSettings();
   const reduceMotion = useReducedMotion();
 
-  const heroImage =
-    settings.heroImageUrl ||
-    "https://images.unsplash.com/photo-1609120664715-9a83a1e2f1f6?auto=format&fit=crop&w=900&q=80";
+  const heroImage = settings.heroImageUrl || HERO_DEFAULT_IMAGE;
 
   return (
     <section className="relative overflow-hidden bg-cream">
@@ -37,9 +36,9 @@ export function Hero() {
             </div>
           )}
 
-          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-cinnamon">
+          {/* <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-cinnamon">
             Lebanon · Home bakery
-          </p>
+          </p> */}
 
           <h1 className="mt-3 font-display text-[clamp(2.5rem,6vw,4.5rem)] font-semibold leading-[1.05] tracking-tight text-espresso">
             {loading ? "Cinnamon rolls, rolled fresh in Lebanon." : settings.heroHeadline}
@@ -88,7 +87,7 @@ export function Hero() {
             <div className="absolute inset-0 bg-gradient-to-t from-espresso/20 via-transparent to-transparent" />
           </div>
 
-          <div className="absolute -bottom-4 -left-4 rounded-2xl border border-cinnamon/15 bg-white/95 px-5 py-4 shadow-lg backdrop-blur-sm sm:-left-8">
+          <div className="absolute -bottom-3 left-2 rounded-2xl border border-cinnamon/15 bg-white/95 px-4 py-3 shadow-lg backdrop-blur-sm sm:-bottom-4 sm:-left-6 sm:px-5">
             <p className="font-display text-2xl font-semibold text-espresso">$20</p>
             <p className="text-xs text-espresso/60">Signature Mini Box · 12 rolls</p>
           </div>

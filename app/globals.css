@@ -120,10 +120,43 @@ body {
 @media (max-width: 1279px) {
   .mini-box-scene--sticky-mobile {
     position: sticky;
-    top: 72px;
-    z-index: 20;
-    max-height: 30vh;
-    margin-bottom: 1rem;
+    top: 56px;
+    z-index: 10;
+    padding-bottom: 0.75rem;
+    background: linear-gradient(180deg, var(--color-cream) 70%, transparent 100%);
+  }
+
+  .mini-box-scene--sticky-mobile .mini-box-container {
+    transform: rotateX(1deg) scale(0.9);
+    transform-origin: top center;
+  }
+
+  .mini-box-scene--sticky-mobile .mini-box-body {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 639px) {
+  .mini-box-scene--sticky-mobile .mini-box-container {
+    transform: rotateX(0deg) scale(0.82);
+  }
+}
+
+.cart-drawer-footer {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
+}
+
+.mobile-order-bar {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+}
+
+.floating-whatsapp {
+  bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  .floating-whatsapp {
+    bottom: 1.5rem;
   }
 }
 

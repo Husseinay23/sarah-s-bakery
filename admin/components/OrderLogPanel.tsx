@@ -30,6 +30,11 @@ export function OrderLogPanel() {
             deliveryNote: data.deliveryNote,
             message: data.message,
             status: data.status ?? "pending",
+            customerName: data.customerName,
+            customerPhone: data.customerPhone,
+            customerAddress: data.customerAddress,
+            customerNotes: data.customerNotes,
+            preferredDate: data.preferredDate,
             createdAt:
               data.createdAt instanceof Timestamp
                 ? data.createdAt.toDate()
@@ -79,6 +84,15 @@ export function OrderLogPanel() {
               {order.status}
             </span>
           </div>
+
+          {(order.customerName || order.customerPhone) && (
+            <div className="mt-3 rounded-xl bg-blush/30 px-3 py-2.5 text-sm text-espresso/80">
+              {order.customerName && <p>Name: {order.customerName}</p>}
+              {order.customerPhone && <p>Phone: {order.customerPhone}</p>}
+              {order.customerAddress && <p>Address: {order.customerAddress}</p>}
+              {order.customerNotes && <p>Notes: {order.customerNotes}</p>}
+            </div>
+          )}
 
           <ul className="mt-3 space-y-1 text-sm text-espresso/80">
             {order.items.map((item) => (

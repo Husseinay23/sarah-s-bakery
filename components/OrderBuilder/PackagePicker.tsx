@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { SlotGridVisual } from "./SlotGridVisual";
 import { FlavorSelectorGrid } from "./FlavorSelectorGrid";
@@ -11,10 +11,12 @@ import {
   formatOrderItems,
   getPackageDeliveryNote,
 } from "@/lib/buildWhatsAppMessage";
+import { useBuilder } from "@/lib/builder/BuilderContext";
 import { useCart } from "@/lib/cart/CartProvider";
 import { useFlavors } from "@/lib/useFlavors";
 import { usePackageTiers } from "@/lib/usePackageTiers";
 import { useSiteSettings } from "@/lib/useSiteData";
+import { randomFillSlots } from "@/lib/randomFill";
 import {
   addToSlots,
   createEmptySlots,
@@ -28,6 +30,7 @@ export function PackagePicker() {
   const { tiers, loading: tiersLoading } = usePackageTiers();
   const { settings, loading: settingsLoading } = useSiteSettings();
   const { addPackage } = useCart();
+  const { highlightedFlavorId, packagePieceCountHint } = useBuilder();
   const reduceMotion = useReducedMotion();
 
   const [pieceCount, setPieceCount] = useState<number | null>(null);
@@ -38,6 +41,7 @@ export function PackagePicker() {
   const { flying, registerFlavorRef, registerSlotRef, triggerFly } = useFlyingRoll();
 
   const loading = flavorsLoading || tiersLoading || settingsLoading;
+  const flavorIds = activeFlavors.map((f) => f.id);
 
   const filledCount = getFilledCount(slots);
   const isComplete = pieceCount !== null && filledCount === pieceCount;
@@ -77,6 +81,21 @@ export function PackagePicker() {
     setAdded(false);
   };
 
+  useEffect(() => {
+    if (!packagePieceCountHint) return;
+    if (tiers.some((t) => t.pieceCount === packagePieceCountHint)) {
+      setPieceCount(packagePieceCountHint);
+      setSlots(createEmptySlots(packagePieceCountHint));
+      setAdded(false);
+    }
+  }, [packagePieceCountHint, tiers]);
+
+  useEffect(() => {
+    if (!highlightedFlavorId) return;
+    const el = document.querySelector(`[data-flavor-id="${highlightedFlavorId}"]`);
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [highlightedFlavorId, pieceCount]);
+
   const handleSelectFlavor = (flavorId: string) => {
     const preview = addToSlots(slots, flavorId);
     if (!preview) return;
@@ -94,6 +113,11 @@ export function PackagePicker() {
     triggerFly(preview.flavorId, preview.slotIndex, "remove", () => {
       setSlots(preview.slots);
     });
+  };
+
+  const handleAutoFill = () => {
+    if (!pieceCount) return;
+    setSlots(randomFillSlots(pieceCount, flavorIds));
   };
 
   const handleAddToCart = () => {
@@ -150,8 +174,8 @@ export function PackagePicker() {
       </div>
 
       {pieceCount !== null && (
-        <div className="grid gap-8 xl:grid-cols-[minmax(260px,340px)_1fr] xl:gap-10">
-          <div className="xl:sticky xl:top-24 xl:self-start">
+        <div className="grid gap-6 lg:grid-cols-[minmax(220px,300px)_1fr] lg:gap-10">
+          <div className="mini-box-scene--sticky-mobile order-2 lg:order-1 lg:sticky lg:top-24 lg:self-start">
             <SlotGridVisual
               slots={slots}
               flavors={activeFlavors}
@@ -178,22 +202,29 @@ export function PackagePicker() {
               </div>
             )}
 
+            {!isComplete && (
+              <button
+                type="button"
+                onClick={handleAutoFill}
+                className="mt-3 w-full rounded-full border border-dashed border-cinnamon/40 px-4 py-2.5 text-xs font-medium text-espresso/70 transition hover:border-cinnamon hover:bg-blush/30"
+              >
+                ✦ Surprise me — auto-fill package
+              </button>
+            )}
+
             <button
               type="button"
               onClick={handleAddToCart}
               disabled={!isComplete || total === 0}
-              className="mt-4 w-full rounded-full bg-espresso px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-espresso/90 disabled:cursor-not-allowed disabled:opacity-40"
+              className="mt-3 w-full rounded-full bg-espresso px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-espresso/90 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {added ? "Added to your order ✓" : "Add Package to Order"}
             </button>
           </div>
 
-          <div>
+          <div className="order-1 lg:order-2">
             <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.08em] text-cinnamon">
               Step 2 — Tap flavors ({filledCount}/{pieceCount})
-            </p>
-            <p className="mb-4 text-xs text-espresso/60">
-              Tap a flavor to fill the next slot. Tap a roll in the grid to remove it.
             </p>
             <FlavorSelectorGrid
               flavors={activeFlavors}
@@ -202,6 +233,7 @@ export function PackagePicker() {
               filledCount={filledCount}
               onSelect={handleSelectFlavor}
               registerRef={registerFlavorRef}
+              highlightedFlavorId={highlightedFlavorId}
             />
           </div>
         </div>

@@ -18,6 +18,9 @@ const defaultSettings: SiteSettings = {
   instagramUrl: "#",
   facebookUrl: "#",
   tiktokUrl: "#",
+  announcementText: "",
+  announcementActive: false,
+  featuredFlavorId: "classic-cinnamon",
 };
 
 const defaultMiniBox: MiniBoxConfig = {

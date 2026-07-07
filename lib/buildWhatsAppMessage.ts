@@ -1,5 +1,6 @@
 import type {
   CartItem,
+  CustomerDetails,
   Flavor,
   MiniBoxConfig,
   OrderItem,
@@ -58,8 +59,29 @@ export function buildWhatsAppMessage(input: PackageOrderInput | MiniBoxOrderInpu
 export function buildCartWhatsAppMessage(
   cartItems: CartItem[],
   settings: SiteSettings,
+  customer?: CustomerDetails,
 ): string {
   const lines: string[] = ["Hi Sarah! I'd like to order:", ""];
+
+  if (customer && (customer.name || customer.phone)) {
+    lines.push("--- My details ---");
+    if (customer.name.trim()) lines.push(`Name: ${customer.name.trim()}`);
+    if (customer.phone.trim()) lines.push(`Phone: ${customer.phone.trim()}`);
+    if (customer.address.trim()) lines.push(`Address: ${customer.address.trim()}`);
+    if (customer.preferredDate) lines.push(`Preferred delivery date: ${customer.preferredDate}`);
+    if (customer.isGift) {
+      lines.push("This is a gift order");
+      if (customer.giftRecipientName.trim()) {
+        lines.push(`Gift for: ${customer.giftRecipientName.trim()}`);
+      }
+      if (customer.giftMessage.trim()) {
+        lines.push(`Gift message: ${customer.giftMessage.trim()}`);
+      }
+    }
+    if (customer.notes.trim()) lines.push(`Notes: ${customer.notes.trim()}`);
+    lines.push("");
+  }
+
   let orderTotal = 0;
   let hasFreeDeliveryItem = false;
 

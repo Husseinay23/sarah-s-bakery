@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import type { Flavor } from "@/lib/types";
+import { getFlavorImage } from "@/lib/flavorMeta";
 
 interface FlavorCardProps {
   flavor: Flavor;
@@ -12,9 +13,7 @@ interface FlavorCardProps {
 export function FlavorCard({ flavor, index }: FlavorCardProps) {
   const reduceMotion = useReducedMotion();
 
-  const imageUrl =
-    flavor.imageUrl ||
-    `https://images.unsplash.com/photo-1609120664715-9a83a1e2f1f6?auto=format&fit=crop&w=400&q=80&sig=${index}`;
+  const imageUrl = getFlavorImage(flavor.id, flavor.imageUrl);
 
   return (
     <motion.article

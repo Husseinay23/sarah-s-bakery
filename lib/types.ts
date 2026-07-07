@@ -39,6 +39,9 @@ export interface SiteSettings {
   instagramUrl: string;
   facebookUrl: string;
   tiktokUrl: string;
+  announcementText: string;
+  announcementActive: boolean;
+  featuredFlavorId: string;
 }
 
 export interface OrderItem {
@@ -57,6 +60,11 @@ export interface OrderLog {
   message: string;
   status: "pending" | "reviewed";
   createdAt: Date;
+  customerName?: string;
+  customerPhone?: string;
+  customerAddress?: string;
+  customerNotes?: string;
+  preferredDate?: string;
 }
 
 export type PackageAllocation = Record<string, number>;
@@ -81,3 +89,25 @@ export interface CartMiniBoxItem {
 }
 
 export type CartItem = CartPackageItem | CartMiniBoxItem;
+
+export interface CustomerDetails {
+  name: string;
+  phone: string;
+  address: string;
+  notes: string;
+  preferredDate: string;
+  isGift: boolean;
+  giftRecipientName: string;
+  giftMessage: string;
+}
+
+export const EMPTY_CUSTOMER: CustomerDetails = {
+  name: "",
+  phone: "",
+  address: "",
+  notes: "",
+  preferredDate: "",
+  isGift: false,
+  giftRecipientName: "",
+  giftMessage: "",
+};

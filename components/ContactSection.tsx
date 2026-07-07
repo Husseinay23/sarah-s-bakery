@@ -23,7 +23,8 @@ export function ContactSection() {
             Order fresh rolls from Sarah
           </h2>
           <p className="mt-5 max-w-md text-base leading-relaxed text-cream/75">
-            {settings.preOrderNote}
+            {settings.preOrderNote} Add your name, phone, and address in the cart before sending
+            your order.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">

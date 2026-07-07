@@ -1,13 +1,15 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { SlotGridVisual } from "@/components/OrderBuilder/SlotGridVisual";
 import { FlavorSelectorGrid } from "@/components/OrderBuilder/FlavorSelectorGrid";
 import { FlyingRoll, useFlyingRoll } from "./FlyingRoll";
+import { useBuilder } from "@/lib/builder/BuilderContext";
 import { useCart } from "@/lib/cart/CartProvider";
 import { useFlavors } from "@/lib/useFlavors";
 import { useMiniBoxConfig } from "@/lib/useSiteData";
+import { randomFillSlots } from "@/lib/randomFill";
 import {
   addToSlots,
   createEmptySlots,
@@ -21,6 +23,7 @@ export function MiniBoxBuilder() {
   const { activeFlavors, loading: flavorsLoading } = useFlavors();
   const { config, loading: configLoading } = useMiniBoxConfig();
   const { addMiniBox } = useCart();
+  const { highlightedFlavorId } = useBuilder();
   const reduceMotion = useReducedMotion();
 
   const [slots, setSlots] = useState<(string | null)[]>(() => createEmptySlots());
@@ -32,6 +35,7 @@ export function MiniBoxBuilder() {
   const eligibleFlavors = activeFlavors.filter((f) =>
     config.eligibleFlavorIds.includes(f.id),
   );
+  const eligibleIds = eligibleFlavors.map((f) => f.id);
 
   const filledCount = getFilledCount(slots);
   const isComplete = filledCount === config.totalPieces;
@@ -63,6 +67,10 @@ export function MiniBoxBuilder() {
     });
   };
 
+  const handleAutoFill = () => {
+    setSlots(randomFillSlots(config.totalPieces, eligibleIds));
+  };
+
   const handleAddToCart = () => {
     if (!isComplete) return;
 
@@ -81,6 +89,12 @@ export function MiniBoxBuilder() {
     setSlots(createEmptySlots());
     setTimeout(() => setAdded(false), 2500);
   };
+
+  useEffect(() => {
+    if (!highlightedFlavorId || !eligibleIds.includes(highlightedFlavorId)) return;
+    const el = document.querySelector(`[data-flavor-id="${highlightedFlavorId}"]`);
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [highlightedFlavorId, eligibleIds]);
 
   if (flavorsLoading || configLoading) {
     return (
@@ -109,8 +123,8 @@ export function MiniBoxBuilder() {
           </p>
         </div>
 
-        <div className="grid gap-8 xl:grid-cols-[minmax(280px,360px)_1fr] xl:gap-12">
-          <div className="mini-box-scene--sticky-mobile xl:sticky xl:top-24 xl:self-start">
+        <div className="grid gap-6 lg:grid-cols-[minmax(240px,320px)_1fr] lg:gap-10">
+          <div className="mini-box-scene--sticky-mobile order-2 lg:order-1 lg:sticky lg:top-24 lg:self-start">
             <SlotGridVisual
               slots={slots}
               flavors={eligibleFlavors}
@@ -126,7 +140,16 @@ export function MiniBoxBuilder() {
               onSlotClick={handleSlotClick}
             />
 
-            <div className="mt-4">
+            <div className="mt-3 flex flex-col gap-2">
+              {!isComplete && (
+                <button
+                  type="button"
+                  onClick={handleAutoFill}
+                  className="w-full rounded-full border border-dashed border-cinnamon/40 px-4 py-2.5 text-xs font-medium text-espresso/70 transition hover:border-cinnamon hover:bg-blush/30"
+                >
+                  ✦ Surprise me — auto-fill box
+                </button>
+              )}
               {isComplete ? (
                 <button
                   type="button"
@@ -143,7 +166,7 @@ export function MiniBoxBuilder() {
             </div>
           </div>
 
-          <div>
+          <div className="order-1 lg:order-2">
             <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.08em] text-cinnamon">
               Pick flavors
             </p>
@@ -154,6 +177,7 @@ export function MiniBoxBuilder() {
               filledCount={filledCount}
               onSelect={handleSelectFlavor}
               registerRef={registerFlavorRef}
+              highlightedFlavorId={highlightedFlavorId}
             />
           </div>
         </div>
