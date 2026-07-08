@@ -179,7 +179,7 @@ export function PackagePicker() {
       </div>
 
       {pieceCount !== null && (
-        <div className="grid gap-6 lg:grid-cols-[minmax(220px,300px)_1fr] lg:gap-10">
+        <div className="grid gap-8 lg:grid-cols-[minmax(220px,300px)_1fr]">
           <div className="mini-box-scene--sticky-mobile order-2 lg:order-1 lg:sticky lg:top-24 lg:self-start">
             <SlotGridVisual
               slots={slots}

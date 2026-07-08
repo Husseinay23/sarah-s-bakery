@@ -20,7 +20,7 @@ export function HeroContent({ loading }: HeroContentProps) {
   const miniBoxPieces = miniBox?.totalPieces ?? 12;
 
   return (
-    <div className="relative z-10 mx-auto max-w-3xl px-4 pb-16 pt-4 text-center sm:px-6 sm:pb-20 lg:pb-24">
+    <div className="relative z-10 mx-auto max-w-3xl px-4 pb-20 pt-4 text-center sm:px-6 sm:pb-24 lg:pb-24">
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ export function HeroContent({ loading }: HeroContentProps) {
           to Sarah on WhatsApp.
         </p>
 
-        <div className="relative mx-auto mt-10 w-full max-w-sm">
+        <div className="relative mx-auto mt-8 w-full max-w-sm">
           <div className="kb-box relative mx-auto aspect-4/5 w-full max-w-[340px]">
             <AppImage
               src={boxImage}
@@ -73,7 +73,7 @@ export function HeroContent({ loading }: HeroContentProps) {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-wrap justify-center gap-4">
+        <div className="mt-16 flex flex-wrap justify-center gap-4">
           <a
             href="#mini-box"
             className="inline-flex rounded-full bg-espresso px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-espresso/90"

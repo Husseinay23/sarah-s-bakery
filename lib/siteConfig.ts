@@ -27,6 +27,13 @@ export const SEO_KEYWORDS = [
 export const AEO_ANSWER =
   "Sarah's Bakery is a home bakery in Lebanon specializing in fresh-baked cinnamon rolls. Choose from seven flavors, fill a Signature Mini Box or build a custom package, then send your order to Sarah on WhatsApp for delivery across Lebanon.";
 
+/** NAP — home bakery, delivery only (no storefront). */
+export const BUSINESS_NAP = {
+  serviceType: "Home bakery — delivery only, no storefront",
+  areaServed: "Delivery across Lebanon",
+  preOrderNote: "Order at least one day ahead — every roll is baked fresh to order.",
+} as const;
+
 export const FAQ_ITEMS = [
   {
     question: "How do I order from Sarah's Bakery?",

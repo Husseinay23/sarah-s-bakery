@@ -2,9 +2,9 @@ import { PackagePicker } from "./PackagePicker";
 
 export function PackageBuilder() {
   return (
-    <section id="order" className="bg-blush/25 px-4 py-20 sm:px-6 lg:py-28">
+    <section id="order" className="bg-blush/25 px-4 py-20 sm:px-6 lg:py-24">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-10 max-w-2xl">
+        <div className="mb-8 max-w-2xl">
           <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-cinnamon">
             Packages
           </p>

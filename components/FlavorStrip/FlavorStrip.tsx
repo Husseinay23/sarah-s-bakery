@@ -18,9 +18,9 @@ export function FlavorStrip() {
   const canMiniBox = (flavorId: string) => config.eligibleFlavorIds.includes(flavorId);
 
   return (
-    <section id="flavors" className="overflow-visible px-4 py-20 sm:px-6 lg:py-28">
+    <section id="flavors" className="overflow-visible px-4 py-20 sm:px-6 lg:py-24">
       <div className="mx-auto max-w-7xl overflow-visible">
-        <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-cinnamon">
               The menu

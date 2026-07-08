@@ -1,4 +1,5 @@
 import {
+  BUSINESS_NAP,
   FAQ_ITEMS,
   getSiteUrl,
   SITE_NAME,
@@ -36,11 +37,15 @@ export function getBakerySchema() {
     address: {
       "@type": "PostalAddress",
       addressCountry: "LB",
-      addressLocality: "Lebanon",
     },
     areaServed: {
       "@type": "Country",
       name: "Lebanon",
+    },
+    additionalProperty: {
+      "@type": "PropertyValue",
+      name: "Service type",
+      value: BUSINESS_NAP.serviceType,
     },
   };
 }

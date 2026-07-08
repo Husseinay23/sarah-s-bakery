@@ -99,7 +99,7 @@ export function MiniBoxBuilder() {
 
   if (flavorsLoading || configLoading) {
     return (
-      <section className="mini-box-section px-4 py-20 sm:px-6 lg:py-28">
+      <section className="mini-box-section px-4 py-20 sm:px-6 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <BuilderSkeleton />
         </div>
@@ -108,12 +108,12 @@ export function MiniBoxBuilder() {
   }
 
   return (
-    <section id="mini-box" className="mini-box-section relative overflow-hidden px-4 py-20 sm:px-6 lg:py-28">
+    <section id="mini-box" className="mini-box-section relative overflow-hidden px-4 py-20 sm:px-6 lg:py-24">
       <div className="pointer-events-none absolute -right-20 top-10 h-64 w-64 rounded-full bg-rose/20 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-0 h-48 w-48 rounded-full bg-cinnamon/15 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl">
-        <div className="mb-10 max-w-2xl">
+        <div className="mb-8 max-w-2xl">
           <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-cinnamon">
             Signature experience
           </p>
@@ -126,7 +126,7 @@ export function MiniBoxBuilder() {
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(240px,320px)_1fr] lg:gap-10">
+        <div className="grid gap-8 lg:grid-cols-[minmax(240px,320px)_1fr]">
           <div className="mini-box-scene--sticky-mobile order-2 lg:order-1 lg:sticky lg:top-24 lg:self-start">
             <SlotGridVisual
               slots={slots}

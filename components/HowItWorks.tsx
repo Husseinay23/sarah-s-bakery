@@ -21,9 +21,9 @@ export function HowItWorks() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="border-y border-cinnamon/10 bg-white/50 px-4 py-16 sm:px-6 lg:py-20">
+    <section className="border-y border-cinnamon/10 bg-white/50 px-4 py-20 sm:px-6 lg:py-24">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-10 text-center">
+        <div className="mb-8 text-center">
           <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-cinnamon">
             How it works
           </p>
@@ -32,7 +32,7 @@ export function HowItWorks() {
           </h2>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3 md:gap-8">
+        <div className="grid gap-8 md:grid-cols-3">
           {steps.map((step, index) => (
             <motion.div
               key={step.title}

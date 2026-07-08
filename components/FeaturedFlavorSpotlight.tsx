@@ -20,7 +20,7 @@ export function FeaturedFlavorSpotlight() {
   const description = getFlavorDescription(flavor.id, flavor.description);
 
   return (
-    <section className="px-4 py-12 sm:px-6 lg:py-16">
+    <section className="px-4 py-16 sm:px-6 lg:py-20">
       <div className="mx-auto max-w-7xl">
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: 20 }}
