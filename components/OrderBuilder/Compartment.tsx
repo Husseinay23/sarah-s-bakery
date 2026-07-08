@@ -1,8 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import { getFlavorImage } from "@/lib/flavorMeta";
+import { FlavorImage } from "@/components/FlavorImage";
 import type { Flavor } from "@/lib/types";
 
 interface CompartmentProps {
@@ -60,11 +59,11 @@ export function Compartment({
             className="absolute inset-0.5 sm:inset-1"
           >
             <div className="roll-shadow relative h-full w-full overflow-hidden rounded-full">
-              <Image
-                src={getFlavorImage(flavor.id, flavor.imageUrl)}
+              <FlavorImage
+                flavorId={flavor.id}
+                imageUrl={flavor.imageUrl}
                 alt={flavor.name}
                 fill
-                className="object-cover"
                 sizes="64px"
               />
             </div>

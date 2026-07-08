@@ -49,36 +49,39 @@ Two roles, used with restraint:
 ```
 ┌─────────────────────────────────────┐
 │  HERO                                │
-│  Logo mark · Headline (Fraunces)     │
-│  Script tagline (Caveat)             │
-│  Hero shot: single roll, macro,      │
-│  slight rotation like it's mid-spin  │
+│  Arch marquee: 7 roll cutouts orbit  │
+│  on a clipped circle (top arc only)  │
+│  Center: logo, headline, tagline,    │
+│  mini box cutout + price badge       │
 ├─────────────────────────────────────┤
 │  FLAVORS                             │
-│  7-card horizontal-scroll strip on   │
-│  mobile, grid on desktop.            │
-│  Cards "unroll" into view on scroll  │
+│  Floating cutout strip — scattered   │
+│  rolls with sticker price tags       │
 ├─────────────────────────────────────┤
-│  BUILD YOUR ORDER  (the signature    │
-│  interactive section — see 5.0)      │
-│  Tabs: Packages | Mini Box           │
+│  MINI BOX BUILDER                    │
+│  Slot-grid picker + add to cart      │
 ├─────────────────────────────────────┤
-│  SIGNATURE MINI BOX                  │
-│  Box photo + flavor picker preview   │
+│  PACKAGE BUILDER                     │
+│  Tier picker + slot grid + cart      │
 ├─────────────────────────────────────┤
-│  DELIVERY / PRE-ORDER / FOOTER       │
+│  CONTACT / FOOTER                    │
 └─────────────────────────────────────┘
 ```
 
+Single page, anchor-linked nav. The hero arch marquee replaces the old "single roll macro shot" — rolls parade along the top arc while the mini box cutout anchors the center.
+
+**Hero arch marquee technique:** Position roll images on a full circle whose center sits below the visible container; `overflow: hidden` clips everything except the top arc. Rotate the circle continuously via `requestAnimationFrame` (~0.13°/frame, ~45s per revolution). Edge fade opacity near clip boundaries. Ken Burns scale on orbit images (CSS, staggered delays). See `components/Hero/ArcMarquee.tsx`.
+
 Single page, anchor-linked nav. No reason to fragment this into multiple routes — everything is in service of one conversion action, and a person should never have to "go back" to find the order builder.
 
-### 2.5 The signature element: The Spiral
+### 2.5 The Spiral & The Arc
 
-One idea, used in exactly three places so it never becomes decoration-for-its-own-sake:
+One rolling motif, expressed in four places:
 
 1. **Scroll progress** — instead of a plain top progress bar, a small cinnamon-roll spiral icon in the nav slowly "rolls up" (rotates + fills in) as the person scrolls down the page. Subtle, top-right, ~32px.
-2. **Section transitions** — flavor cards animate in with a slight rotate-and-settle (like a piece of dough uncurling into place), using Framer Motion `layout` + a custom `rotate: [-8, 0]` on scroll-into-view. Applied once per section, not per-element, so it reads as orchestrated rather than jittery.
-3. **Order confirmation moment** — when someone finishes building an order and taps "Send Order on WhatsApp," the button's icon briefly spins full-circle before the WhatsApp link opens. One second of delight, not a loading spinner pretending to be busy.
+2. **Hero arch marquee** — the hero-specific expression of the same rolling motif. Seven transparent roll cutouts orbit on a clipped circle above the headline; the mini box cutout sits center-stage with a subtle Ken Burns pulse. This is the page's opening "wow" moment without autoplay carousels or parallax.
+3. **Section transitions** — flavor cards animate in with a slight rotate-and-settle (like a piece of dough uncurling into place), using Framer Motion on scroll-into-view. Applied once per section, not per-element, so it reads as orchestrated rather than jittery.
+4. **Order confirmation moment** — when someone finishes checkout and taps send on WhatsApp, the cart clears after the link opens. (Button spin can be added on the send CTA.)
 
 Everything else on the page stays quiet — real product photography, generous whitespace, no competing motion.
 
@@ -86,7 +89,7 @@ Everything else on the page stays quiet — real product photography, generous w
 
 - Respect `prefers-reduced-motion` — spiral effects become simple fades.
 - No autoplay carousels. No parallax for parallax's sake.
-- Hover states on flavor cards: gentle lift (`translateY(-4px)`) + shadow bloom, 150ms, nothing else.
+- Hover on flavor pieces: roll straightens (`rotate(0)`) and lifts (`translateY(-8px)`), ~200ms ease-out; sticker tag scales up slightly (~50ms delayed) so it feels hand-placed, not grid-snapped. No card containers — cutout PNGs float on the cream background with asymmetric sticker tags.
 
 ---
 
@@ -219,20 +222,27 @@ app/
     dashboard/page.tsx
 
 components/
-  Hero.tsx
-  FlavorCard.tsx
-  FlavorGrid.tsx
+  Hero/
+    Hero.tsx
+    ArcMarquee.tsx
+    HeroContent.tsx
+  FlavorStrip/
+    FlavorStrip.tsx
+    FlavorPiece.tsx      // floating cutout + sticker tag (not a card)
+  FlavorImage.tsx
   OrderBuilder/
-    OrderBuilderTabs.tsx
     PackagePicker.tsx
-    FlavorStepper.tsx
-    MiniBoxPicker.tsx
+    PackageBuilder.tsx
+    SlotGridVisual.tsx
+    FlavorSelectorGrid.tsx
+    Compartment.tsx
     PriceSummary.tsx
-    SendToWhatsAppButton.tsx
-  MiniBoxSpotlight.tsx
-  DeliveryInfo.tsx
+  MiniBoxBuilder/
+    MiniBoxBuilder.tsx
+    FlyingRoll.tsx
+  Cart/
   Footer.tsx
-  SpiralProgressIcon.tsx      // the signature nav element
+  SpiralProgressIcon.tsx
 
 lib/
   firebase.ts
@@ -262,11 +272,16 @@ admin/components/
 
 1. Scaffold Next.js + Tailwind, wire up theme tokens and both fonts
 2. Static hero + flavor grid with placeholder data (get the design feel right before wiring Firestore)
-3. Firestore schema + seed script (flavors, tiers, mini box config, settings)
-4. Package Builder logic + live price calc
-5. Mini Box Builder logic
-6. `buildWhatsAppMessage` util + wire both builders to it
-7. Signature Spiral moments (nav scroll indicator, card reveal, send-button spin)
+2b. **Build ArcMarquee** with placeholder divs first to confirm geometry, then swap in real cutout PNGs from `public/CR-cutout/`
+3. Firestore schema + admin manual setup (flavors, tiers, mini box config, settings)
+4. Package Builder logic + live price calc — **use `getTierPrice()`**: any non-classic flavor → entire package at `otherFlavorPrice` tier (not per-flavor sum)
+5. Mini Box Builder logic — **read `eligibleFlavorIds` from Firestore**, never hardcode the 6 flavors
+6. `buildWhatsAppMessage` util + cart checkout → WhatsApp (`encodeURIComponent`; test line breaks on iOS + Android devices)
+7. Signature Spiral moments (nav scroll indicator, card reveal)
+8. Skeleton loading states for flavor grid + builders while Firestore loads
+9. Admin tier editor: explicit Save per row (no live auto-save on price blur)
+10. Admin panel (flavor CRUD, settings, order log)
+11. Firebase security rules + deploy
 8. Admin panel: auth gate → flavor editor → tier/settings editor
 9. Responsive pass + reduced-motion pass
 10. Real photography swap-in (replace placeholders with Sarah's actual shots)

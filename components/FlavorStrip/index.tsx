@@ -1,0 +1,1 @@
+export { FlavorStrip } from "./FlavorStrip";

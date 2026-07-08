@@ -1,3 +1,5 @@
+import { FLAVOR_LOCAL_IMAGES, FLAVOR_CUTOUT_IMAGES } from "./localImages";
+
 export const FLAVOR_DESCRIPTIONS: Record<string, string> = {
   "classic-cinnamon": "White frosting glaze",
   tiramisu: "Cocoa powder and cream dollops",
@@ -8,16 +10,16 @@ export const FLAVOR_DESCRIPTIONS: Record<string, string> = {
   "apple-pie": "Apple crumb topping and caramel drizzle",
 };
 
-import { FLAVOR_LOCAL_IMAGES } from "./localImages";
-
-export const FLAVOR_PLACEHOLDER_IMAGES: Record<string, string> = FLAVOR_LOCAL_IMAGES;
-
-export function getFlavorImage(flavorId: string, imageUrl?: string): string {
+/** Admin upload wins; otherwise use bundled /public design assets. */
+export function getFlavorImage(flavorId: string, imageUrl?: string): string | null {
   if (imageUrl) return imageUrl;
-  return (
-    FLAVOR_PLACEHOLDER_IMAGES[flavorId] ??
-    "https://images.unsplash.com/photo-1609120664715-9a83a1e2f1f6?auto=format&fit=crop&w=400&q=80"
-  );
+  return FLAVOR_LOCAL_IMAGES[flavorId] ?? null;
+}
+
+/** Cutout PNGs for the floating flavor strip (admin upload still wins). */
+export function getFlavorCutout(flavorId: string, imageUrl?: string): string | null {
+  if (imageUrl) return imageUrl;
+  return FLAVOR_CUTOUT_IMAGES[flavorId] ?? FLAVOR_LOCAL_IMAGES[flavorId] ?? null;
 }
 
 export function getFlavorDescription(flavorId: string, description?: string): string {

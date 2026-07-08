@@ -9,7 +9,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { updateOrderStatus } from "@/lib/seedDatabase";
+import { updateOrderStatus } from "@/lib/orderStatus";
 import type { OrderLog } from "@/lib/types";
 
 export function OrderLogPanel() {

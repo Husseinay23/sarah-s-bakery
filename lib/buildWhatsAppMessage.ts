@@ -125,22 +125,38 @@ export function buildWhatsAppUrl(message: string, whatsappNumber: string): strin
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
 
-export function calculatePackagePrice(
+/**
+ * Package pricing rule: if ANY slot uses a non-classic flavor, the entire package
+ * is priced at the tier's otherFlavorPrice. All-classic packages use classicPrice.
+ */
+export function getTierPrice(
   pieceCount: number,
-  allocations: Record<string, number>,
+  flavorIds: string[],
   flavors: Flavor[],
   tiers: PackageTier[],
 ): number {
   const tier = tiers.find((t) => t.pieceCount === pieceCount);
   if (!tier) return 0;
 
-  const hasNonClassic = Object.entries(allocations).some(([flavorId, qty]) => {
-    if (qty <= 0) return false;
-    const flavor = flavors.find((f) => f.id === flavorId);
-    return flavor && !flavor.isClassic;
-  });
+  const uniqueIds = [...new Set(flavorIds.filter(Boolean))];
+  const allClassic =
+    uniqueIds.length > 0 &&
+    uniqueIds.every((id) => flavors.find((f) => f.id === id)?.isClassic ?? false);
 
-  return hasNonClassic ? tier.otherFlavorPrice : tier.classicPrice;
+  return allClassic ? tier.classicPrice : tier.otherFlavorPrice;
+}
+
+export function calculatePackagePrice(
+  pieceCount: number,
+  allocations: Record<string, number>,
+  flavors: Flavor[],
+  tiers: PackageTier[],
+): number {
+  const flavorIds = Object.entries(allocations)
+    .filter(([, qty]) => qty > 0)
+    .map(([id]) => id);
+
+  return getTierPrice(pieceCount, flavorIds, flavors, tiers);
 }
 
 export function getPackageDeliveryNote(

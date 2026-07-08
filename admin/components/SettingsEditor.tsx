@@ -231,7 +231,7 @@ export function SettingsEditor() {
               onClick={() => saveSettings({ heroImageUrl: HERO_DEFAULT_IMAGE })}
               className="ml-2 rounded-lg border border-cinnamon/30 px-3 py-2 text-sm hover:bg-blush/40"
             >
-              Use mini-box.jpeg
+              Use default hero image
             </button>
           </div>
         </div>

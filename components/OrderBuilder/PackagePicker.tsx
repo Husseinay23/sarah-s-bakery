@@ -24,6 +24,7 @@ import {
   removeSlotAt,
 } from "@/lib/miniBoxState";
 import { getGridCols } from "@/lib/slotGrid";
+import { BuilderSkeleton } from "@/components/Skeleton";
 
 export function PackagePicker() {
   const { activeFlavors, loading: flavorsLoading } = useFlavors();
@@ -143,7 +144,11 @@ export function PackagePicker() {
   };
 
   if (loading) {
-    return <p className="text-center text-espresso/60">Loading package options...</p>;
+    return (
+      <div className="py-12">
+        <BuilderSkeleton />
+      </div>
+    );
   }
 
   return (

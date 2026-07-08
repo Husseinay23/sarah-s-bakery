@@ -2,7 +2,7 @@ import { Hero } from "@/components/Hero";
 import { AnnouncementsBar } from "@/components/AnnouncementsBar";
 import { HowItWorks } from "@/components/HowItWorks";
 import { FeaturedFlavorSpotlight } from "@/components/FeaturedFlavorSpotlight";
-import { FlavorGrid } from "@/components/FlavorGrid";
+import { FlavorStrip } from "@/components/FlavorStrip";
 import { MiniBoxBuilder } from "@/components/MiniBoxBuilder/MiniBoxBuilder";
 import { PackageBuilder } from "@/components/OrderBuilder/PackageBuilder";
 import { ContactSection } from "@/components/ContactSection";
@@ -18,7 +18,7 @@ export default function HomePage() {
         <Hero />
         <HowItWorks />
         <FeaturedFlavorSpotlight />
-        <FlavorGrid />
+        <FlavorStrip />
         <MiniBoxBuilder />
         <PackageBuilder />
         <ContactSection />

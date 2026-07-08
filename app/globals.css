@@ -19,6 +19,45 @@ html {
   html {
     scroll-behavior: auto;
   }
+
+  .arc-marquee {
+    display: none;
+  }
+
+  .kb-roll,
+  .kb-box {
+    animation: none !important;
+  }
+}
+
+/* ── Hero arch marquee Ken Burns ── */
+
+@keyframes kb-roll {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes kb-box {
+  0%,
+  100% {
+    transform: scale(1.02);
+  }
+  50% {
+    transform: scale(1.1) translate(-1%, -1%);
+  }
+}
+
+.kb-roll {
+  animation: kb-roll 6s ease-in-out infinite;
+}
+
+.kb-box {
+  animation: kb-box 9s ease-in-out infinite;
 }
 
 body {

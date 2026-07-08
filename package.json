@@ -6,8 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "seed": "tsx scripts/seed-firestore.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "firebase": "^11.6.0",

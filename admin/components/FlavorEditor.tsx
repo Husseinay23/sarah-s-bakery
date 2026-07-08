@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import {
   collection,
   deleteDoc,
@@ -18,8 +17,7 @@ import { db } from "@/lib/firebase";
 import { uploadFile, getStoragePath } from "@/lib/uploadFile";
 import { BUNDLED_FLAVOR_IMAGES } from "@/lib/localImages";
 import { flavorIdFromName } from "@/lib/flavorUtils";
-import { syncLocalImages } from "@/lib/syncLocalImages";
-import { getFlavorImage } from "@/lib/flavorMeta";
+import { FlavorImage } from "@/components/FlavorImage";
 import type { Flavor } from "@/lib/types";
 
 const EMPTY_NEW_FLAVOR = {
@@ -35,8 +33,6 @@ export function FlavorEditor() {
   const [saving, setSaving] = useState<string | null>(null);
   const [newFlavor, setNewFlavor] = useState(EMPTY_NEW_FLAVOR);
   const [creating, setCreating] = useState(false);
-  const [syncing, setSyncing] = useState(false);
-  const [syncMessage, setSyncMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const q = query(collection(db, "flavors"), orderBy("sortOrder", "asc"));
@@ -135,38 +131,13 @@ export function FlavorEditor() {
     setSaving(null);
   };
 
-  const handleSyncImages = async () => {
-    setSyncing(true);
-    setSyncMessage(null);
-    try {
-      const result = await syncLocalImages();
-      setSyncMessage(result.message);
-    } catch (err) {
-      setSyncMessage(err instanceof Error ? err.message : "Sync failed.");
-    } finally {
-      setSyncing(false);
-    }
-  };
-
   return (
     <div className="space-y-6">
       <section className="rounded-2xl border border-cinnamon/20 bg-white p-5">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h3 className="font-display text-xl font-semibold">Add new product</h3>
-          <button
-            type="button"
-            onClick={handleSyncImages}
-            disabled={syncing}
-            className="rounded-full border border-cinnamon/30 px-4 py-2 text-sm font-medium hover:bg-blush/40 disabled:opacity-50"
-          >
-            {syncing ? "Applying..." : "Apply bundled site images"}
-          </button>
-        </div>
-        {syncMessage && <p className="mb-4 text-sm text-espresso/70">{syncMessage}</p>}
+        <h3 className="mb-4 font-display text-xl font-semibold">Add new product</h3>
         <p className="mb-4 text-sm text-espresso/60">
-          Photos in <code className="text-xs">public/CR/</code> map to flavors by ID. Use
-          &quot;Apply bundled site images&quot; to push them to Firestore (and set the hero to
-          mini-box.jpeg).
+          Upload a photo or leave blank — the site uses matching images from{" "}
+          <code className="text-xs">public/CR/</code> when available.
         </p>
 
         <div className="grid gap-3 sm:grid-cols-2">
@@ -200,16 +171,16 @@ export function FlavorEditor() {
             />
           </label>
           <label className="block text-sm">
-            <span className="mb-1 block font-medium">Photo</span>
+            <span className="mb-1 block font-medium">Photo override (optional)</span>
             <select
               value={newFlavor.imageUrl}
               onChange={(e) => setNewFlavor({ ...newFlavor, imageUrl: e.target.value })}
               className="w-full rounded-lg border border-cinnamon/20 px-3 py-2"
             >
-              <option value="">No photo yet</option>
+              <option value="">Use site default / upload later</option>
               {BUNDLED_FLAVOR_IMAGES.map((img) => (
                 <option key={img.path} value={img.path}>
-                  {img.label} ({img.path})
+                  {img.label}
                 </option>
               ))}
             </select>
@@ -241,11 +212,11 @@ export function FlavorEditor() {
         >
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
             <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-blush">
-              <Image
-                src={getFlavorImage(flavor.id, flavor.imageUrl)}
+              <FlavorImage
+                flavorId={flavor.id}
+                imageUrl={flavor.imageUrl}
                 alt={flavor.name}
                 fill
-                className="object-cover"
               />
             </div>
 
@@ -300,13 +271,13 @@ export function FlavorEditor() {
                 />
               </label>
               <label className="block text-sm">
-                <span className="mb-1 block font-medium">Photo URL</span>
+                <span className="mb-1 block font-medium">Photo override</span>
                 <select
                   value={flavor.imageUrl}
                   onChange={(e) => updateFlavor(flavor.id, { imageUrl: e.target.value })}
                   className="w-full rounded-lg border border-cinnamon/20 px-3 py-2"
                 >
-                  <option value="">Use bundled fallback</option>
+                  <option value="">Use site default from public/CR</option>
                   {BUNDLED_FLAVOR_IMAGES.map((img) => (
                     <option key={img.path} value={img.path}>
                       {img.label}
@@ -381,9 +352,7 @@ export function FlavorEditor() {
       ))}
 
       {flavors.length === 0 && (
-        <p className="text-sm text-espresso/60">
-          No products yet. Seed menu data or add your first product above.
-        </p>
+        <p className="text-sm text-espresso/60">No products yet. Add your first product above.</p>
       )}
     </div>
   );

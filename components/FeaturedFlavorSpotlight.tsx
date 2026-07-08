@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { getFlavorDescription, getFlavorImage } from "@/lib/flavorMeta";
+import { getFlavorDescription } from "@/lib/flavorMeta";
+import { FlavorImage } from "@/components/FlavorImage";
 import { useFlavors } from "@/lib/useFlavors";
 import { useSiteSettings } from "@/lib/useSiteData";
 import { useBuilder } from "@/lib/builder/BuilderContext";
@@ -30,8 +30,9 @@ export function FeaturedFlavorSpotlight() {
           className="grid overflow-hidden rounded-3xl border border-cinnamon/15 bg-white shadow-[0_8px_40px_rgba(58,35,24,0.08)] lg:grid-cols-2"
         >
           <div className="relative aspect-[4/3] bg-blush/30 lg:aspect-auto lg:min-h-[320px]">
-            <Image
-              src={getFlavorImage(flavor.id, flavor.imageUrl)}
+            <FlavorImage
+              flavorId={flavor.id}
+              imageUrl={flavor.imageUrl}
               alt={flavor.name}
               fill
               className="object-cover"

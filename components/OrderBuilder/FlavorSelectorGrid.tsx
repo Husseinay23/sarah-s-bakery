@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { getFlavorImage } from "@/lib/flavorMeta";
+import { FlavorImage } from "@/components/FlavorImage";
 import { countFlavor } from "@/lib/miniBoxState";
 import type { Flavor } from "@/lib/types";
 
@@ -51,8 +50,9 @@ export function FlavorSelectorGrid({
               ref={(el) => registerRef(flavor.id, el)}
               className="relative h-14 w-14 overflow-hidden rounded-lg bg-blush/30 sm:h-16 sm:w-16 sm:rounded-xl"
             >
-              <Image
-                src={getFlavorImage(flavor.id, flavor.imageUrl)}
+              <FlavorImage
+                flavorId={flavor.id}
+                imageUrl={flavor.imageUrl}
                 alt={flavor.name}
                 fill
                 className="object-cover transition duration-300 group-hover:scale-105"

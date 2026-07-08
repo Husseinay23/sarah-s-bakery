@@ -13,9 +13,7 @@ export type BuilderTarget = "mini-box" | "package";
 interface BuilderContextValue {
   highlightedFlavorId: string | null;
   navigateToBuilder: (flavorId: string, target: BuilderTarget) => void;
-  consumeHighlight: () => string | null;
   packagePieceCountHint: number | null;
-  consumePackageHint: () => number | null;
 }
 
 const BuilderContext = createContext<BuilderContextValue | null>(null);
@@ -40,30 +38,12 @@ export function BuilderProvider({ children }: { children: ReactNode }) {
     setTimeout(() => setHighlightedFlavorId(null), 5000);
   }, []);
 
-  const consumeHighlight = useCallback(() => {
-    const id = highlightedFlavorId;
-    if (id) {
-      setTimeout(() => setHighlightedFlavorId(null), 4000);
-    }
-    return id;
-  }, [highlightedFlavorId]);
-
-  const consumePackageHint = useCallback(() => {
-    const hint = packagePieceCountHint;
-    if (hint !== null) {
-      setTimeout(() => setPackagePieceCountHint(null), 100);
-    }
-    return hint;
-  }, [packagePieceCountHint]);
-
   return (
     <BuilderContext.Provider
       value={{
         highlightedFlavorId,
         navigateToBuilder,
-        consumeHighlight,
         packagePieceCountHint,
-        consumePackageHint,
       }}
     >
       {children}

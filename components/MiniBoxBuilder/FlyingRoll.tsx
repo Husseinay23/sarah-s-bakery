@@ -2,8 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import Image from "next/image";
-import { getFlavorImage } from "@/lib/flavorMeta";
+import { FlavorImage } from "@/components/FlavorImage";
 import type { Flavor } from "@/lib/types";
 
 export interface FlyingRollState {
@@ -46,11 +45,11 @@ export function FlyingRoll({ animation, flavor }: FlyingRollProps) {
         }}
         transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
       >
-        <Image
-          src={getFlavorImage(flavor.id, flavor.imageUrl)}
+        <FlavorImage
+          flavorId={flavor.id}
+          imageUrl={flavor.imageUrl}
           alt=""
           fill
-          className="object-cover"
           sizes="56px"
         />
       </motion.div>

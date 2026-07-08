@@ -18,6 +18,7 @@ import {
   removeSlotAt,
   slotsToOrderItems,
 } from "@/lib/miniBoxState";
+import { BuilderSkeleton } from "@/components/Skeleton";
 
 export function MiniBoxBuilder() {
   const { activeFlavors, loading: flavorsLoading } = useFlavors();
@@ -98,8 +99,10 @@ export function MiniBoxBuilder() {
 
   if (flavorsLoading || configLoading) {
     return (
-      <section className="px-4 py-24 text-center text-espresso/60">
-        Loading your box builder...
+      <section className="mini-box-section px-4 py-20 sm:px-6 lg:py-28">
+        <div className="mx-auto max-w-7xl">
+          <BuilderSkeleton />
+        </div>
       </section>
     );
   }
