@@ -12,9 +12,10 @@ const defaultSettings: SiteSettings = {
   storeName: "Sarah's Bakery",
   heroImageUrl: "",
   logoUrl: "",
-  heroHeadline: "Cinnamon rolls, rolled fresh in Lebanon.",
+  heroHeadline: "Cinnamon rolls, rolled fresh",
   heroTagline: "you choose, we make it",
-  preOrderNote: "Please order a day ahead — every roll is made fresh, not stocked.",
+  preOrderNote:
+    "Please order a day ahead — every roll is made fresh, not stocked.",
   instagramUrl: "#",
   facebookUrl: "#",
   tiktokUrl: "#",
@@ -36,12 +37,18 @@ export function useSiteSettings() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "settings", "general"), (snapshot) => {
-      if (snapshot.exists()) {
-        setSettings({ ...defaultSettings, ...(snapshot.data() as SiteSettings) });
-      }
-      setLoading(false);
-    });
+    const unsubscribe = onSnapshot(
+      doc(db, "settings", "general"),
+      (snapshot) => {
+        if (snapshot.exists()) {
+          setSettings({
+            ...defaultSettings,
+            ...(snapshot.data() as SiteSettings),
+          });
+        }
+        setLoading(false);
+      },
+    );
 
     return unsubscribe;
   }, []);

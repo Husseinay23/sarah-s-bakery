@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { AppImage } from "@/components/AppImage";
 import { getFlavorImage } from "@/lib/flavorMeta";
 
 interface FlavorImageProps {
@@ -37,7 +37,7 @@ export function FlavorImage({
   }
 
   return (
-    <Image
+    <AppImage
       src={src}
       alt={alt}
       fill={fill}

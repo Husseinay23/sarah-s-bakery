@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Fraunces, Caveat, Inter } from "next/font/google";
 import { ClientProviders } from "@/components/ClientProviders";
+import {
+  DEFAULT_DESCRIPTION,
+  getSiteUrl,
+  SEO_KEYWORDS,
+  SITE_NAME,
+} from "@/lib/siteConfig";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -22,13 +28,45 @@ const inter = Inter({
   display: "swap",
 });
 
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  title: "Sarah's Bakery | Cinnamon Rolls",
-  description:
-    "Cinnamon rolls, rolled fresh in Lebanon. Build your order and send it on WhatsApp in under a minute.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `Cinnamon Rolls in Lebanon | ${SITE_NAME}`,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: DEFAULT_DESCRIPTION,
+  keywords: SEO_KEYWORDS,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: SITE_NAME,
+    title: `Cinnamon Rolls in Lebanon | ${SITE_NAME}`,
+    description: DEFAULT_DESCRIPTION,
+    images: [
+      {
+        url: "/mini-box-cutout.png",
+        width: 1200,
+        height: 630,
+        alt: "Sarah's Bakery Signature Mini Box",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Cinnamon Rolls in Lebanon | ${SITE_NAME}`,
+    description: DEFAULT_DESCRIPTION,
+    images: ["/mini-box-cutout.png"],
+  },
   robots: {
     index: true,
     follow: true,
+    googleBot: { index: true, follow: true },
   },
 };
 

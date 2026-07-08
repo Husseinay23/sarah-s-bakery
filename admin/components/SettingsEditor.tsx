@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { AppImage } from "@/components/AppImage";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { uploadFile, getStoragePath } from "@/lib/uploadFile";
@@ -191,7 +191,7 @@ export function SettingsEditor() {
             <p className="mb-2 text-sm font-medium">Logo</p>
             {settings.logoUrl && (
               <div className="relative mb-2 h-16 w-16 overflow-hidden rounded-full">
-                <Image src={settings.logoUrl} alt="Logo" fill className="object-cover" />
+                <AppImage src={settings.logoUrl} alt="Logo" fill className="object-cover" />
               </div>
             )}
             <label className="cursor-pointer rounded-lg border border-cinnamon/30 px-3 py-2 text-sm inline-block">
@@ -211,7 +211,7 @@ export function SettingsEditor() {
             <p className="mb-2 text-sm font-medium">Hero banner</p>
             {settings.heroImageUrl && (
               <div className="relative mb-2 h-24 w-full overflow-hidden rounded-xl">
-                <Image src={settings.heroImageUrl} alt="Hero" fill className="object-cover" />
+                <AppImage src={settings.heroImageUrl} alt="Hero" fill className="object-cover" />
               </div>
             )}
             <label className="cursor-pointer rounded-lg border border-cinnamon/30 px-3 py-2 text-sm inline-block">

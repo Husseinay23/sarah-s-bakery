@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
+import { AppImage } from "@/components/AppImage";
 import { useReducedMotion } from "framer-motion";
 import { HERO_MARQUEE_IMAGES } from "@/lib/localImages";
 import { computeArcGeometry, rollPosition } from "@/lib/arcMarqueeGeometry";
 
-const ROTATION_SPEED = 0.13; // degrees per frame (~45s per revolution)
-const IMAGE_SIZE = 96;
+const ROTATION_SPEED = 0.22; // degrees per frame (~27s per revolution)
+const IMAGE_SIZE = 140;
 
 const STATIC_FALLBACK_INDICES = [0, 2, 4, 6];
 
@@ -67,7 +67,7 @@ export function ArcMarquee() {
     );
 
     return (
-      <div className="arc-marquee-static relative mx-auto h-[200px] w-full max-w-4xl">
+      <div className="arc-marquee-static relative mx-auto h-[260px] w-full max-w-4xl">
         {STATIC_FALLBACK_INDICES.map((imgIdx, i) => {
           const { x, y } = rollPosition(geom, staticAngles[i], IMAGE_SIZE);
           return (
@@ -76,7 +76,7 @@ export function ArcMarquee() {
               className="absolute"
               style={{ transform: `translate(${x}px, ${y}px)`, width: IMAGE_SIZE, height: IMAGE_SIZE }}
             >
-              <Image
+              <AppImage
                 src={HERO_MARQUEE_IMAGES[imgIdx]}
                 alt=""
                 width={IMAGE_SIZE}
@@ -93,7 +93,7 @@ export function ArcMarquee() {
   return (
     <div
       ref={containerRef}
-      className="arc-marquee pointer-events-none relative h-[220px] w-full overflow-hidden sm:h-[280px] lg:h-[320px]"
+      className="arc-marquee pointer-events-none relative h-[280px] w-full overflow-hidden sm:h-[340px] lg:h-[400px]"
       aria-hidden="true"
     >
       {HERO_MARQUEE_IMAGES.map((src, i) => (
@@ -105,13 +105,13 @@ export function ArcMarquee() {
           className="absolute left-0 top-0 will-change-transform"
           style={{ width: IMAGE_SIZE, height: IMAGE_SIZE }}
         >
-          <Image
+          <AppImage
             src={src}
             alt=""
             width={IMAGE_SIZE}
             height={IMAGE_SIZE}
             priority={i < 3}
-            className={`kb-roll h-full w-full object-contain drop-shadow-[0_8px_16px_rgba(58,35,24,0.12)]`}
+            className="kb-roll h-full w-full object-contain drop-shadow-[0_8px_16px_rgba(58,35,24,0.12)]"
             style={{ animationDelay: `${i * 0.4}s` }}
           />
         </div>

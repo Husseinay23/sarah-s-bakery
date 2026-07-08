@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { AppImage } from "@/components/AppImage";
 import { motion, useReducedMotion } from "framer-motion";
 import { useSiteSettings, useMiniBoxConfig } from "@/lib/useSiteData";
 import { MINI_BOX_CUTOUT, HERO_DEFAULT_IMAGE } from "@/lib/localImages";
@@ -27,7 +27,7 @@ export function HeroContent({ loading }: HeroContentProps) {
         transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1] }}
       >
         {settings.logoUrl ? (
-          <Image
+          <AppImage
             src={settings.logoUrl}
             alt="Sarah's Bakery logo"
             width={72}
@@ -49,18 +49,18 @@ export function HeroContent({ loading }: HeroContentProps) {
         </p>
 
         <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-espresso/70">
-          Fill your Signature Mini Box roll by roll, or build a package — then send your full order
+          Fill your Signature Mini Box roll by roll, or build a package then send your full order
           to Sarah on WhatsApp.
         </p>
 
         <div className="relative mx-auto mt-10 w-full max-w-sm">
-          <div className="kb-box relative mx-auto aspect-4/5 w-full max-w-[280px]">
-            <Image
+          <div className="kb-box relative mx-auto aspect-4/5 w-full max-w-[340px]">
+            <AppImage
               src={boxImage}
               alt="Sarah's Bakery Signature Mini Box"
               fill
               className="object-contain drop-shadow-[0_20px_40px_rgba(58,35,24,0.15)]"
-              sizes="280px"
+              sizes="340px"
               priority
             />
           </div>

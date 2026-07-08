@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { AppImage } from "@/components/AppImage";
 import { motion, useReducedMotion } from "framer-motion";
 import { getFlavorCutout } from "@/lib/flavorMeta";
 import { getFlavorLayout } from "@/lib/flavorLayout";
@@ -57,7 +57,7 @@ export function FlavorPiece({
         type="button"
         onClick={onPackage}
         className="group/piece relative block cursor-pointer border-0 bg-transparent p-0"
-        style={{ width: narrow ? 120 : 148, height: narrow ? 120 : 148 }}
+        style={{ width: narrow ? 150 : 188, height: narrow ? 150 : 188 }}
         animate={{ y: layout.yOffset, rotate: rot }}
         whileHover={
           reduceMotion
@@ -67,13 +67,13 @@ export function FlavorPiece({
         aria-label={`Add ${flavor.name} to a package`}
       >
         {src ? (
-          <Image
+          <AppImage
             src={src}
             alt={flavor.name}
-            width={narrow ? 120 : 148}
-            height={narrow ? 120 : 148}
+            width={narrow ? 150 : 188}
+            height={narrow ? 150 : 188}
             className="h-full w-full object-contain drop-shadow-[0_10px_20px_rgba(58,35,24,0.12)]"
-            sizes="(max-width: 640px) 120px, 148px"
+            sizes="(max-width: 640px) 150px, 188px"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-4xl">🥐</div>

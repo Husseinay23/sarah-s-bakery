@@ -2,6 +2,7 @@
 
 import { useSiteSettings } from "@/lib/useSiteData";
 import { useCart } from "@/lib/cart/CartProvider";
+import { AEO_ANSWER } from "@/lib/siteConfig";
 
 export function Footer() {
   const { settings } = useSiteSettings();
@@ -14,7 +15,22 @@ export function Footer() {
         <div>
           <p className="font-display text-2xl font-semibold">{settings.storeName}</p>
           <p className="mt-3 text-sm leading-relaxed text-espresso/65">
-            Cinnamon rolls, rolled fresh in Lebanon. Every order is made to order — never stocked.
+            {AEO_ANSWER}
+          </p>
+          <p className="mt-3 text-sm text-espresso/55">
+            Home bakery · Delivery across Lebanon
+            {whatsappNumber && (
+              <>
+                {" "}
+                · WhatsApp{" "}
+                <a
+                  href={`https://wa.me/${whatsappNumber.replace(/\D/g, "")}`}
+                  className="text-espresso/75 hover:text-espresso"
+                >
+                  +{whatsappNumber.replace(/\D/g, "")}
+                </a>
+              </>
+            )}
           </p>
         </div>
 
@@ -41,6 +57,16 @@ export function Footer() {
               >
                 Review your order
               </button>
+            </li>
+            <li>
+              <a href="#contact" className="text-espresso/75 hover:text-espresso">
+                Contact & delivery
+              </a>
+            </li>
+            <li>
+              <a href="#faq" className="text-espresso/75 hover:text-espresso">
+                FAQ
+              </a>
             </li>
           </ul>
         </div>
